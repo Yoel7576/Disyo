@@ -1,0 +1,7 @@
+# Mi página web
+
+1. Tener mi proyecto
+1. Conectar mi proyecto a GitHub
+1. Tener un archivo en html llamado "index.html"
+1. Hacer push al repositorio
+1. Activar GitHub pages
