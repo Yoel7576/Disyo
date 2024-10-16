@@ -35,7 +35,7 @@ The `echo: false` option disables the printing of code (only output is displayed
 # Mi página web
 
 1.  Tener mi proyecto
-2.  Conectar mi proyecto a GitHub
-3.  Tener un archivo en html llamado "index.html"
-4.  Hacer push al repositorio
-5.  Activar GitHub pages
+1.  Conectar mi proyecto a GitHub
+1.  Tener un archivo en html llamado "index.html"
+1.  Hacer push al repositorio
+1.  Activar GitHub pages
