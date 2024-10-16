@@ -2,7 +2,6 @@
 title: "mi pagina web"
 author: "Yoel Díaz Saucedo"
 format: html
-editor: visual
 ---
 
 ## Quarto
