@@ -1,7 +1,13 @@
 ---
 title: "mi pagina web"
 author: "Yoel Díaz Saucedo"
-format: html
+format:
+  html:
+   toc: true
+   toc-location: left
+   embed-resources: true
+   number-sections: true
+   output-file: index
 ---
 
 ## Quarto
