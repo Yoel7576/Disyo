@@ -8,6 +8,7 @@ format:
    embed-resources: true
    number-sections: true
    output-file: index
+   theme: darkly
 ---
 
 ## Quarto
