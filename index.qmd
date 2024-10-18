@@ -9,6 +9,8 @@ format:
    number-sections: true
    output-file: index
    theme: darkly
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Quarto
@@ -39,3 +41,40 @@ The `echo: false` option disables the printing of code (only output is displayed
 1.  Tener un archivo en html llamado "index.html"
 1.  Hacer push al repositorio
 1.  Activar GitHub pages
+
+
+# Análisis de datos
+
+## Importar datos
+```{r}
+dss <- read.csv(file = "datos 2/LA MOLINA 2014 POTATO WUE (FB) - fb.csv", header = TRUE, sep = "," )
+
+```
+
+# Modelo lineal
+```{r}
+modelo <- lm(formula = lfa ~ bloque + geno + riego +riego*geno , data = dss)
+
+anova(modelo)
+str(dss)
+
+
+```
+
+
+# box plot
+
+```{r}
+library(ggplot2)
+ggplot(dss, aes(x = factor(geno), y = lfa, fill = factor(riego))) +
+  geom_boxplot() +
+  labs(x = "genotipo" , y = "LFA" , fill = "riego") +
+  theme_minimal() +
+  theme(axis.tex.x = element_text(angle = 45, hjust = 1)) +
+  ggtitle("Boxplot de LFA por genotipo y riego")
+
+
+
+```
+
+
