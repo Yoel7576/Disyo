@@ -26,22 +26,43 @@ Quarto enables you to weave together content and executable code into a finished
 1.  Hacer push al repositorio
 1.  Activar GitHub pages
 
+source('https://inkaverse.com/setup.r')
 
 # Análisis de datos
 
 ## Importar datos
 
+## forma csv
+
 ```{r}
 dss <- read.csv(file = "datos 2/LA MOLINA 2014 POTATO WUE (FB) - fb.csv", header = TRUE, sep = "," )
 
+str(dss)
+
 ```
 
-# Modelo lineal
+## forma url
+
 ```{r}
-modelo <- lm(formula = lfa ~ bloque + geno + riego +riego*geno , data = dss)
+library(googlesheets4)
+library(tidyverse)
+
+url <-"https://docs.google.com/spreadsheets/d/15r7ZwcZZHbEgltlF6gSFvCTFA-CFzVBWwg3mFlRyKPs/edit?gid=172957346#gid=172957346"
+gs<-as_sheets_id(url)
+
+fb<-gs %>%
+  range_read("fb")
+
+```
+
+
+# Modelo lineal
+
+```{r}
+modelo <- lm(formula = lfa ~ bloque + geno + riego +riego*geno , data = fb)
 
 anova(modelo)
-str(dss)
+str(fb)
 
 
 ```
@@ -51,7 +72,7 @@ str(dss)
 
 ```{r}
 library(ggplot2)
-ggplot(dss, aes(x = factor(geno), y = lfa, fill = factor(riego))) +
+ggplot(fb, aes(x = factor(geno), y = lfa, fill = factor(riego))) +
   geom_boxplot() +
   labs(x = "genotipo" , y = "LFA" , fill = "riego") +
   theme_minimal() +
@@ -62,7 +83,7 @@ ggplot(dss, aes(x = factor(geno), y = lfa, fill = factor(riego))) +
 
 ```
 
-source('https://inkaverse.com/setup.r')
+
 
 # Comparación De Medias
 
@@ -143,6 +164,87 @@ ggplot(mc, aes(x = geno, y = emmean, fill = riego)) +
 ```
 
 
+# Análisis multivariado (Mas de 2 variables): Por correlación y PCA
 
+## Análisis de correlación
+
+```{r}
+
+variables_cuantitativas <- fb[, c("lfa", "hi", "leafdw", "wue")]
+
+matriz_correlacion <- cor(variables_cuantitativas, method = "pearson")
+
+print(matriz_correlacion)
+
+library(corrplot)
+
+corrplot(matriz_correlacion, method = "circle", type = "upper", 
+         tl.col = "black", tl.srt = 45, 
+         title = "Matriz de Correlación", mar = c(0, 0, 1, 0))
+```
+
+
+```{r}
+library(tidyverse)
+library(psych)
+
+fb %>%
+  select_if(is.numeric) %>%
+  dplyr::select(!c("block")) %>%
+  pairs.panels(x = .
+      , hist.col="blue"
+      , pch = 21
+      , stars = TRUE 
+      , scale = FALSE 
+      , lm= TRUE
+      )
+```
+
+
+## PCA análisis de componentes principales
+
+```{r}
+variables_cuantitativas <- fb[sapply(fb, is.numeric)]
+
+variables_cuantitativas_estandarizadas <- scale(variables_cuantitativas)
+
+pca_result <- prcomp(variables_cuantitativas_estandarizadas, center = TRUE, scale. = TRUE)
+summary(pca_result)
+screeplot(pca_result, type = "lines", main = "Scree Plot")
+
+library(ggplot2)
+
+biplot(pca_result, main = "Biplot del PCA", cex = 0.7)
+
+library(ggfortify)
+
+autoplot(pca_result, data = fb, colour = 'black', loadings = TRUE, loadings.label = TRUE, 
+         loadings.label.size = 3, main = "Gráfico de Componentes Principales")
+
+```
+
+### PCA DOS EN UNO
+
+```{r}
+library(FactoMineR)
+library(cowplot)
+
+mv <- fb %>%
+  group_by(riego, geno) %>%
+  summarise(across(where(is.numeric), ~ mean(., na.rm = TRUE))) %>%
+  PCA(scale.unit = T, quali.sup = c(1:4), graph = F)
+
+p1 <- plot(mv,
+           choix="ind",
+           habillage=1,
+           label = "ind")
+
+p2 <- plot(mv,
+           choix="var")
+
+list(p1, p2) %>%
+  plot_grid(plotlist = ., nrow = 1)
+
+```
 
 
