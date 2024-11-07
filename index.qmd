@@ -13,7 +13,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Quarto
+# Quarto
 
 Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
@@ -28,11 +28,11 @@ Quarto enables you to weave together content and executable code into a finished
 
 source('https://inkaverse.com/setup.r')
 
-# Análisis de datos
+#  Análisis de datos
 
-## Importar datos
+##  Importar datos
 
-## forma csv
+###  forma csv
 
 ```{r}
 dss <- read.csv(file = "datos 2/LA MOLINA 2014 POTATO WUE (FB) - fb.csv", header = TRUE, sep = "," )
@@ -41,7 +41,7 @@ str(dss)
 
 ```
 
-## forma url
+###  Importar datos con "url"
 
 ```{r}
 library(googlesheets4)
@@ -56,22 +56,25 @@ fb<-gs %>%
 ```
 
 
-# Modelo lineal
+#  Modelo lineal
 
 ```{r}
 modelo <- lm(formula = lfa ~ bloque + geno + riego +riego*geno , data = fb)
 
 anova(modelo)
+
 str(fb)
 
+plot(modelo)
 
 ```
 
 
-# box plot
+# Diagrama de caja
 
 ```{r}
 library(ggplot2)
+
 ggplot(fb, aes(x = factor(geno), y = lfa, fill = factor(riego))) +
   geom_boxplot() +
   labs(x = "genotipo" , y = "LFA" , fill = "riego") +
@@ -85,7 +88,7 @@ ggplot(fb, aes(x = factor(geno), y = lfa, fill = factor(riego))) +
 
 
 
-# Comparación De Medias
+#  Comparación De Medias
 
 ```{r}
 library(agricolae)  
@@ -122,7 +125,7 @@ str (mc)
 ```
 
 
-### Gráfico en ggplot2
+##  Gráfico en ggplot2
 
 ```{r}
 library(ggplot2)
@@ -138,7 +141,7 @@ ggplot(mc, aes(x = variedad, y = lfa, fill = riego)) +
 ```
 
 
-## comparacion de medias: emmeans 
+#  comparacion de medias: emmeans 
 
 ```{r}
 library(emmeans)
@@ -152,7 +155,7 @@ mc <- emmeans(modelo, ~ riego|geno) %>%
 mc
 ```
 
-### plot
+##  Gráfico
 
 ```{r}
 ggplot(mc, aes(x = geno, y = emmean, fill = riego)) +
