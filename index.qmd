@@ -251,3 +251,73 @@ list(p1, p2) %>%
 ```
 
 
+
+# Realizar ANOVA
+anova_resultado <- aov(`% DE COHESIÓN` ~ factor(TRATAMIENTO), data = datos)
+
+# Realizar la prueba de Tukey HSD
+tukey_resultado <- TukeyHSD(anova_resultado)
+
+# Ver los resultados de Tukey
+summary(tukey_resultado)
+
+# Gráfico de caja para la variable "% DE COHESIÓN" por "TRATAMIENTO"
+
+ggplot(datos, aes(x = factor(TRATAMIENTO), y = `% DE COHESIÓN`)) +
+  geom_boxplot(fill = "skyblue", color = "black") +
+  labs(title = "Comparación de Medias: % DE COHESIÓN por TRATAMIENTO", 
+       x = "Tratamiento", y = "% DE COHESIÓN") +
+  theme_minimal()
+
+
+
+# Gráficos de ggplot2
+
+## Gráficos en data cruda
+
+### Box plot
+
+```{r}
+fb %>% 
+  ggplot(data = ., aes(x = geno, y = hi, fill = riego)) +
+  geom_boxplot()+
+   labs(x = "Genotipos"
+        , y = "Índice de cosecha"
+        , fill = "Tratamiento"
+        , title = "Eficiencia de uso de agua en Papa"
+        , subtitle = "Índice de cosecha"
+        , caption = "n = 150",) +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(text = element_text(family = "serif"))
+  
+
+
+
+```
+
+
+### Scater plot
+
+```{r}
+fb %>% 
+  ggplot(data = ., aes(x = twue, y = hi, color = riego)) +
+  geom_point() +
+  labs(x = "Genotipos"
+        , y = "Índice de cosecha"
+        , fill = "Tratamiento"
+        , title = "Eficiencia de uso de agua en Papa"
+        , subtitle = "Índice de cosecha"
+        , caption = "n = 150",) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(text = element_text(family = "serif"))
+
+
+
+```
+
+
+
+
+
