@@ -303,6 +303,7 @@ fb %>%
 fb %>% 
   ggplot(data = ., aes(x = twue, y = hi, color = riego)) +
   geom_point() +
+  geom_smooth() +
   labs(x = "Genotipos"
         , y = "Índice de cosecha"
         , fill = "Tratamiento"
